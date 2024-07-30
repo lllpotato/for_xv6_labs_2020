@@ -127,6 +127,8 @@ found:
   p->context.ra = (uint64)forkret;
   p->context.sp = p->kstack + PGSIZE;
 
+  p->syscall_trace = 0;//为syscall_trace设置一个初始值0，防止垃圾数据
+
   return p;
 }
 
@@ -294,6 +296,8 @@ fork(void)
   pid = np->pid;
 
   np->state = RUNNABLE;
+
+  np->syscall_trace = p->syscall_trace;
 
   release(&np->lock);
 
@@ -693,3 +697,22 @@ procdump(void)
     printf("\n");
   }
 }
+
+
+//用于统计已经创建的进程数
+uint64
+count_process(void){
+  uint64 cnt = 0;
+  for(struct proc *p = proc; p < &proc[NPROC]; p++){
+    //不需要锁proc结构，因为我们只是读取进程列表，不需要写
+    acquire(&p->lock);
+    if(p->state != UNUSED) {//不是UNUSED的进程，就是已经分配的
+      cnt++;
+    }
+    release(&p->lock);
+  }
+  return cnt;
+}
+
+
+
