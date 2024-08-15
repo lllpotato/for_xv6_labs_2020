@@ -160,8 +160,10 @@ int             uartgetc(void);
 // vm.c
 void            kvminit(void);
 void            kvminithart(void);
-uint64          kvmpa(uint64);
-void            kvmmap(uint64, uint64, uint64, int);
+// uint64          kvmpa(uint64);
+uint64          kvmpa(pagetable_t pgtbl, uint64);//添加第一个参数 pagetable_t pgtbl
+// void            kvmmap(uint64, uint64, uint64, int);
+void            kvmmap(pagetable_t pgtbl, uint64, uint64, uint64, int);//添加第一个参数 pagetable_t pgtbl
 int             mappages(pagetable_t, uint64, uint64, uint64, int);
 pagetable_t     uvmcreate(void);
 void            uvminit(pagetable_t, uchar *, uint);
@@ -179,6 +181,9 @@ int             copyout(pagetable_t, uint64, char *, uint64);
 int             copyin(pagetable_t, char *, uint64, uint64);
 int             copyinstr(pagetable_t, char *, uint64, uint64);
 int             vmprint(pagetable_t pagetable); //添加函数声明
+void            kvm_map_pagetable(pagetable_t pgtbl); //lab3.2
+pagetable_t     kvminit_newpgtbl();//lab3.2
+void            kvm_free_kernelpgtbl(pagetable_t pagetable);//lab3.2 递归释放一个内核页表中的所有 mapping，但是不释放其指向的物理页
 
 // plic.c
 void            plicinit(void);
