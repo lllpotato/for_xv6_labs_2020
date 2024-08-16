@@ -184,6 +184,9 @@ int             vmprint(pagetable_t pagetable); //添加函数声明
 void            kvm_map_pagetable(pagetable_t pgtbl); //lab3.2
 pagetable_t     kvminit_newpgtbl();//lab3.2
 void            kvm_free_kernelpgtbl(pagetable_t pagetable);//lab3.2 递归释放一个内核页表中的所有 mapping，但是不释放其指向的物理页
+int             kvmcopymappings(pagetable_t src, pagetable_t dst, uint64 start, uint64 sz);//lab3.3将 src 页表的一部分页映射关系拷贝到 dst 页表中。只拷贝页表项，不拷贝实际的物理页内存。成功返回0，失败返回 -1
+uint64          kvmdealloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz);//lab3.4 用于内核页表内程序内存映射与用户页表程序内存映射之间的同步
+
 
 // plic.c
 void            plicinit(void);
