@@ -132,3 +132,13 @@ printfinit(void)
   initlock(&pr.lock, "pr");
   pr.locking = 1;
 }
+
+//lab4.2
+void backtrace() {
+  uint64 fp = r_fp(); //获取当前的fp指针
+  while(fp != PGROUNDUP(fp)) { // 如果已经到达栈底  就是一个页面的高地址部分
+    uint64 ra = *(uint64*)(fp - 8); // return address
+    printf("%p\n", ra);
+    fp = *(uint64*)(fp - 16); // previous fp
+  }
+}
