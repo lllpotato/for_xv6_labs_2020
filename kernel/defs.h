@@ -171,6 +171,8 @@ uint64          walkaddr(pagetable_t, uint64);
 int             copyout(pagetable_t, uint64, char *, uint64);
 int             copyin(pagetable_t, char *, uint64, uint64);
 int             copyinstr(pagetable_t, char *, uint64, uint64);
+void            uvmlazytouch(uint64 va);//lab5 new add // 函数负责分配实际的物理内存并建立映射。懒分配的内存页在被 touch 后就可以被使用了。
+int             uvmshouldtouch(uint64 va);//lab5 new add //用于检测一个虚拟地址是不是一个需要被 touch 的懒分配内存地址，
 
 // plic.c
 void            plicinit(void);
